@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="4dp"
+    android:transitionName="repoInfo"
+    app:cardBackgroundColor="@color/colorCardBackground"
+    app:cardCornerRadius="5dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivUserImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="Repo Owner Image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvOrgName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/source_code_pro_bold"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivUserImage"
+            app:layout_constraintTop_toTopOf="@+id/ivUserImage" />
+
+        <TextView
+            android:id="@+id/tvRepoOwnerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/source_code_pro_semibold"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvOrgName"
+            app:layout_constraintTop_toBottomOf="@+id/tvOrgName" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/colorDarkGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ivUserImage"
+            app:layout_constraintTop_toBottomOf="@+id/ivUserImage" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/source_code_pro"
+            android:textColor="@color/colorMidGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <View
+            android:id="@+id/circle_language"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/circle_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
+
+        <TextView
+            android:id="@+id/tvLanguageName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/source_code_pro_semibold"
+            android:text="@string/text_kotlin"
+            android:textColor="@color/colorMidGrey"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/circle_language"
+            app:layout_constraintStart_toEndOf="@+id/circle_language"
+            app:layout_constraintTop_toTopOf="@+id/circle_language" />
+
+
+        <ImageView
+            android:id="@+id/ivStar"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="Star rating image"
+            android:src="@drawable/ic_star_24"
+            app:layout_constraintBottom_toBottomOf="@+id/circle_language"
+            app:layout_constraintStart_toEndOf="@+id/tvLanguageName"
+            app:layout_constraintTop_toTopOf="@+id/circle_language" />
+
+        <TextView
+            android:id="@+id/tvStarCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/source_code_pro_semibold"
+            android:text="2.2k"
+            android:textColor="@color/colorMidGrey"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivStar"
+            app:layout_constraintStart_toEndOf="@+id/ivStar"
+            app:layout_constraintTop_toTopOf="@+id/ivStar" />
+
+        <TextView
+            android:id="@+id/tvIssuesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/solid_border_bg"
+            android:fontFamily="@font/source_code_pro_semibold"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="counting text "
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvStarCount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvStarCount" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

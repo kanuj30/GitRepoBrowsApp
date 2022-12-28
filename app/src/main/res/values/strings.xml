@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">GitRepoBrowsApp</string>
+    <string name="text_kotlin">Kotlin</string>
+    <string name="text_issues_count">Open Issue :</string>
+    <string name="text_license">License</string>
+</resources>
