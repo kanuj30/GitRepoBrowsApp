@@ -1,8 +1,9 @@
-package com.kdroid.gitrepobrowsapp
+package com.kdroid.gitrepobrowsapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kdroid.common.extensions.viewBindings
+import com.kdroid.gitrepobrowsapp.R
 import com.kdroid.gitrepobrowsapp.databinding.ActivityMainBinding
 import com.kdroid.gitrepobrowsapp.ui.githubrepo.main.MainFragment
 

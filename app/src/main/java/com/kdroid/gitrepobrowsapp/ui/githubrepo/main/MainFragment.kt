@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kdroid.common.ViewState
 import com.kdroid.common.extensions.viewBindings
 import com.kdroid.gitrepobrowsapp.R
-import com.kdroid.gitrepobrowsapp.api.ApiHelperImpl
 import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
 import com.kdroid.gitrepobrowsapp.databinding.FragmentMainBinding
 import com.kdroid.gitrepobrowsapp.network.ApiClient
@@ -27,7 +26,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         fun newInstance() = MainFragment()
     }
 
-    private var repository: GitRepository = GitRepository()
+    private var repository: GitRepository = GitRepository(ApiClient.request!!)
     private lateinit var viewModel: MainViewModel
     private val binding by viewBindings(FragmentMainBinding::bind)
     private var repoList = mutableListOf<RepositoryDTO>()
@@ -53,8 +52,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         // val apiHelper = ApiHelperImpl(ApiClient.request!!)
 
         viewModel = ViewModelProvider(this,
-            GitViewModelFactory(repository,
-                ApiHelperImpl(ApiClient.request!!))).get(MainViewModel::class.java)
+            GitViewModelFactory(repository)).get(MainViewModel::class.java)
 
         viewModel.fetchRepoList()
 

@@ -3,7 +3,6 @@ package com.kdroid.gitrepobrowsapp.ui.repodetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kdroid.common.ViewState
-import com.kdroid.gitrepobrowsapp.api.ApiHelper
 import com.kdroid.gitrepobrowsapp.data.IssuesModel
 import com.kdroid.gitrepobrowsapp.data.LicenseDTO
 import com.kdroid.gitrepobrowsapp.data.RepoDetails
@@ -14,9 +13,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class RepoDetailViewModel(val gitRepository: GitRepository, val apiHelper: ApiHelper) :
-    ViewModel() {
-
+class RepoDetailViewModel(val gitRepository: GitRepository) : ViewModel() {
     private val _repoData = MutableStateFlow<ViewState<RepoDetails>>(ViewState.loading())
     val onRepoData: StateFlow<ViewState<RepoDetails>> = _repoData
 
@@ -24,8 +21,8 @@ class RepoDetailViewModel(val gitRepository: GitRepository, val apiHelper: ApiHe
 
         if (!licenceUrl.isNullOrEmpty() && !issueURL.isNullOrEmpty()) {
             viewModelScope.launch(Dispatchers.Main) {
-                apiHelper.getLicenseDetails(licenceUrl)
-                    .zip(apiHelper.getIssues(issueURL)) { licenceData, issueData ->
+                gitRepository.getLicenseDetails(licenceUrl)
+                    .zip(gitRepository.getIssues(issueURL)) { licenceData, issueData ->
                         var licenceInfo: LicenseDTO? = null
                         var issueInfo: List<IssuesModel>? = null
 

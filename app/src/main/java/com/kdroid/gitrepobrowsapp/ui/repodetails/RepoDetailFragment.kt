@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kdroid.common.ViewState
 import com.kdroid.common.extensions.viewBindings
 import com.kdroid.gitrepobrowsapp.R
-import com.kdroid.gitrepobrowsapp.api.ApiHelperImpl
 import com.kdroid.gitrepobrowsapp.data.IssuesModel
 import com.kdroid.gitrepobrowsapp.data.RepoDetails
 import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
@@ -34,7 +33,7 @@ class RepoDetailFragment : Fragment(R.layout.fragment_repo_details) {
     }
 
     private val binding by viewBindings(FragmentRepoDetailsBinding::bind)
-    private val repository = GitRepository()
+    private val repository = GitRepository(ApiClient.request!!)
     private lateinit var repoData: RepositoryDTO
     private val issuesList = mutableListOf<IssuesModel>()
 
@@ -50,16 +49,13 @@ class RepoDetailFragment : Fragment(R.layout.fragment_repo_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // val apiHelper = ApiHelperImpl(ApiClient.request!!)
         val args = arguments
         repoData = args?.getParcelable(REPO_EXTRA_DATA)!!
-        Timber.d("repoData : " + repoData)
+        Timber.d("repoData :  $repoData")
         viewModel = ViewModelProvider(this,
             GitViewModelFactory(
                 repository,
-                ApiHelperImpl(ApiClient.request!!),
-            )).get(RepoDetailViewModel::class.java)
+            ))[RepoDetailViewModel::class.java]
         populateViewData()
         observeLiveData()
     }

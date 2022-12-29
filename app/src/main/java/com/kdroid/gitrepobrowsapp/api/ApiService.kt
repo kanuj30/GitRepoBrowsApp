@@ -2,11 +2,10 @@ package com.kdroid.gitrepobrowsapp.api
 
 import com.kdroid.gitrepobrowsapp.data.*
 import com.kdroid.gitrepobrowsapp.network.NetworkResponse
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Url
 
-interface GitService {
+interface ApiService {
     /**
      *
      */

@@ -1,6 +1,6 @@
 package com.kdroid.gitrepobrowsapp.network
 
-import com.kdroid.gitrepobrowsapp.api.GitService
+import com.kdroid.gitrepobrowsapp.api.ApiService
 import com.moczul.ok2curl.CurlInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,7 +10,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 object ApiClient {
-    var request: GitService? =null
+    var request: ApiService? =null
         private set
 
     fun init() {
@@ -26,7 +26,7 @@ object ApiClient {
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient).build()
 
-        request = retrofit.create(GitService::class.java)
+        request = retrofit.create(ApiService::class.java)
     }
 
 }
