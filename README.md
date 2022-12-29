@@ -14,4 +14,4 @@ The Applications makes use of
 - <code>Dagger2</code> which allows dependency injections across the application
 - <code>Retrofit</code> which the rest api client used in the to make network calls
 - <code>Picasso</code> for image loading
-- <code>RxJava</code> for asynchronous programming
+- <code>Coroutines</code> for asynchronous programming
