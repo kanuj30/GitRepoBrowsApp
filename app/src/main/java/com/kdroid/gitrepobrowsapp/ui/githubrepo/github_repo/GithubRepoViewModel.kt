@@ -1,4 +1,4 @@
-package com.kdroid.gitrepobrowsapp.ui.githubrepo.main
+package com.kdroid.gitrepobrowsapp.ui.githubrepo.github_repo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,11 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.kdroid.common.ViewState
 import com.kdroid.gitrepobrowsapp.data.Response
 import com.kdroid.gitrepobrowsapp.network.NetworkResponse
-import com.kdroid.gitrepobrowsapp.ui.repo.GitRepository
+import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val gitRepository: GitRepository) : ViewModel() {
+class GithubRepoViewModel(private val gitRepository: GitRepository) : ViewModel() {
 
     private val _state = MutableLiveData<ViewState<Response>>()
     val state: LiveData<ViewState<Response>> get() = _state

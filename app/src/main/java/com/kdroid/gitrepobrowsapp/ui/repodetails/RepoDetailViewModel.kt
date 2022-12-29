@@ -7,18 +7,20 @@ import com.kdroid.gitrepobrowsapp.data.IssuesModel
 import com.kdroid.gitrepobrowsapp.data.LicenseDTO
 import com.kdroid.gitrepobrowsapp.data.RepoDetails
 import com.kdroid.gitrepobrowsapp.network.NetworkResponse
-import com.kdroid.gitrepobrowsapp.ui.repo.GitRepository
+import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class RepoDetailViewModel(val gitRepository: GitRepository) : ViewModel() {
+
+    val TAG = RepoDetailViewModel::class.java.name
     private val _repoData = MutableStateFlow<ViewState<RepoDetails>>(ViewState.loading())
     val onRepoData: StateFlow<ViewState<RepoDetails>> = _repoData
 
     fun getRepoDetailData(licenceUrl: String?, issueURL: String?) {
-
+        Timber.d("getRepoDetailData() called with: licenceUrl = $licenceUrl, issueURL = $issueURL")
         if (!licenceUrl.isNullOrEmpty() && !issueURL.isNullOrEmpty()) {
             viewModelScope.launch(Dispatchers.Main) {
                 gitRepository.getLicenseDetails(licenceUrl)

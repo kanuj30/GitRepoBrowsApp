@@ -1,4 +1,4 @@
-package com.kdroid.gitrepobrowsapp.ui.githubrepo.main
+package com.kdroid.gitrepobrowsapp.ui.githubrepo.github_repo
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,25 +9,27 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kdroid.common.ViewState
+import com.kdroid.common.extensions.hide
+import com.kdroid.common.extensions.show
 import com.kdroid.common.extensions.viewBindings
 import com.kdroid.gitrepobrowsapp.R
 import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
 import com.kdroid.gitrepobrowsapp.databinding.FragmentMainBinding
 import com.kdroid.gitrepobrowsapp.network.ApiClient
 import com.kdroid.gitrepobrowsapp.ui.githubrepo.adapter.RepoListAdapter
-import com.kdroid.gitrepobrowsapp.ui.repo.GitRepository
+import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
 import com.kdroid.gitrepobrowsapp.ui.repodetails.RepoDetailFragment
 import com.kdroid.gitrepobrowsapp.viewmodelfactory.GitViewModelFactory
 import timber.log.Timber
 
-class MainFragment : Fragment(R.layout.fragment_main) {
+class GithubRepoFragment : Fragment(R.layout.fragment_main) {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = GithubRepoFragment()
     }
 
     private var repository: GitRepository = GitRepository(ApiClient.request!!)
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: GithubRepoViewModel
     private val binding by viewBindings(FragmentMainBinding::bind)
     private var repoList = mutableListOf<RepositoryDTO>()
 
@@ -49,10 +51,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated()")
-        // val apiHelper = ApiHelperImpl(ApiClient.request!!)
-
-        viewModel = ViewModelProvider(this,
-            GitViewModelFactory(repository)).get(MainViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, GitViewModelFactory(repository))[GithubRepoViewModel::class.java]
 
         viewModel.fetchRepoList()
 
@@ -65,8 +65,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             bundle.putParcelable(RepoDetailFragment.REPO_EXTRA_DATA, repoData)
             fragment.arguments = bundle
             activity?.supportFragmentManager?.beginTransaction()
-                ?.addSharedElement(sharedView, "repoName")
-                ?.replace(R.id.container, fragment)?.addToBackStack(null)?.commit()
+                ?.addSharedElement(sharedView, "repoName")?.replace(R.id.container, fragment)
+                ?.addToBackStack(null)?.commit()
         }
 
         binding.repoList.apply {
@@ -80,6 +80,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             Timber.d("Emitting data")
             when (state) {
                 is ViewState.Success -> {
+                    binding.lottieAnimation.hide()
+                    binding.progressBar.hide()
                     repoList.clear()
                     repoList.addAll(state.data.items.take(20).toMutableList())
                     repoAdapter.notifyDataSetChanged()
@@ -91,9 +93,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun errorState() {
-
+        binding.progressBar.hide()
+        binding.lottieAnimation.show()
+        binding.lottieAnimation.playAnimation()
     }
 
     private fun loadingState() {
+        binding.lottieAnimation.hide()
+        binding.lottieAnimation.cancelAnimation()
+        binding.progressBar.show()
     }
 }

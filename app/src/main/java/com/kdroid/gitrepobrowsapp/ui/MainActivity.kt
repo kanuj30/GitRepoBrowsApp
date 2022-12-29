@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.kdroid.common.extensions.viewBindings
 import com.kdroid.gitrepobrowsapp.R
 import com.kdroid.gitrepobrowsapp.databinding.ActivityMainBinding
-import com.kdroid.gitrepobrowsapp.ui.githubrepo.main.MainFragment
+import com.kdroid.gitrepobrowsapp.ui.githubrepo.github_repo.GithubRepoFragment
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, GithubRepoFragment.newInstance())
                 .commitNow()
         }
     }

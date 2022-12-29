@@ -18,7 +18,7 @@ import com.kdroid.gitrepobrowsapp.data.RepoDetails
 import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
 import com.kdroid.gitrepobrowsapp.databinding.FragmentRepoDetailsBinding
 import com.kdroid.gitrepobrowsapp.network.ApiClient
-import com.kdroid.gitrepobrowsapp.ui.repo.GitRepository
+import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
 import com.kdroid.gitrepobrowsapp.utils.CircleTransform
 import com.kdroid.gitrepobrowsapp.viewmodelfactory.GitViewModelFactory
 import com.squareup.picasso.Picasso

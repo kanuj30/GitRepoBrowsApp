@@ -74,4 +74,8 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
+    def $lottieVersion = "5.2.0"
+    implementation 'com.airbnb.android:lottie:5.2.0'
+
+
 }

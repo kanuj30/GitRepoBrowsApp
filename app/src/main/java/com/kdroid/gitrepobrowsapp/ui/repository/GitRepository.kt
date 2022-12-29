@@ -1,4 +1,4 @@
-package com.kdroid.gitrepobrowsapp.ui.repo
+package com.kdroid.gitrepobrowsapp.ui.repository
 
 import com.kdroid.gitrepobrowsapp.api.ApiHelper
 import com.kdroid.gitrepobrowsapp.api.ApiService
