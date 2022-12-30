@@ -1,5 +1,6 @@
 package com.kdroid.gitrepobrowsapp.ui.githubrepo.github_repo
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +16,11 @@ import com.kdroid.common.extensions.viewBindings
 import com.kdroid.gitrepobrowsapp.R
 import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
 import com.kdroid.gitrepobrowsapp.databinding.FragmentMainBinding
-import com.kdroid.gitrepobrowsapp.network.ApiClient
+import com.kdroid.gitrepobrowsapp.ui.MainActivity
 import com.kdroid.gitrepobrowsapp.ui.githubrepo.adapter.RepoListAdapter
-import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
 import com.kdroid.gitrepobrowsapp.ui.repodetails.RepoDetailFragment
-import com.kdroid.gitrepobrowsapp.viewmodelfactory.GitViewModelFactory
 import timber.log.Timber
+import javax.inject.Inject
 
 class GithubRepoFragment : Fragment(R.layout.fragment_main) {
 
@@ -28,11 +28,18 @@ class GithubRepoFragment : Fragment(R.layout.fragment_main) {
         fun newInstance() = GithubRepoFragment()
     }
 
-    private var repository: GitRepository = GitRepository(ApiClient.request!!)
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private lateinit var viewModel: GithubRepoViewModel
     private val binding by viewBindings(FragmentMainBinding::bind)
     private var repoList = mutableListOf<RepositoryDTO>()
 
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).dashboardComponent.inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +58,7 @@ class GithubRepoFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated()")
-        viewModel =
-            ViewModelProvider(this, GitViewModelFactory(repository))[GithubRepoViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[GithubRepoViewModel::class.java]
 
         viewModel.fetchRepoList()
 

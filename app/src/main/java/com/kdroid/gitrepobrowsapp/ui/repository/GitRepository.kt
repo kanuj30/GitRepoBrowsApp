@@ -9,8 +9,9 @@ import com.kdroid.gitrepobrowsapp.data.Response
 import com.kdroid.gitrepobrowsapp.network.NetworkResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class GitRepository(private val apiService: ApiService) : ApiHelper {
+class GitRepository @Inject constructor(private val apiService: ApiService) : ApiHelper {
 
     suspend fun getAllRepo(): NetworkResponse<Response, Error> = apiService.getAllRepositories()
 

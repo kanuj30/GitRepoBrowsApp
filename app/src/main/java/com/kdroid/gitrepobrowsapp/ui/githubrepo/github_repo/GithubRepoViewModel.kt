@@ -10,8 +10,9 @@ import com.kdroid.gitrepobrowsapp.network.NetworkResponse
 import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GithubRepoViewModel(private val gitRepository: GitRepository) : ViewModel() {
+class GithubRepoViewModel @Inject constructor(private val gitRepository: GitRepository) : ViewModel() {
 
     private val _state = MutableLiveData<ViewState<Response>>()
     val state: LiveData<ViewState<Response>> get() = _state

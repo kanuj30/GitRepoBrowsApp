@@ -12,8 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-class RepoDetailViewModel(val gitRepository: GitRepository) : ViewModel() {
+class RepoDetailViewModel @Inject constructor(val gitRepository: GitRepository) : ViewModel() {
 
     val TAG = RepoDetailViewModel::class.java.name
     private val _repoData = MutableStateFlow<ViewState<RepoDetails>>(ViewState.loading())

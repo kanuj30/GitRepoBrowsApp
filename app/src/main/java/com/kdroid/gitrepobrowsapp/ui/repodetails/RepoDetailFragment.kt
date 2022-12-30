@@ -1,5 +1,6 @@
 package com.kdroid.gitrepobrowsapp.ui.repodetails
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +19,14 @@ import com.kdroid.gitrepobrowsapp.data.RepoDetails
 import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
 import com.kdroid.gitrepobrowsapp.databinding.FragmentRepoDetailsBinding
 import com.kdroid.gitrepobrowsapp.network.ApiClient
+import com.kdroid.gitrepobrowsapp.ui.MainActivity
 import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
 import com.kdroid.gitrepobrowsapp.utils.CircleTransform
 import com.kdroid.gitrepobrowsapp.viewmodelfactory.GitViewModelFactory
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 class RepoDetailFragment : Fragment(R.layout.fragment_repo_details) {
 
@@ -32,13 +35,20 @@ class RepoDetailFragment : Fragment(R.layout.fragment_repo_details) {
         fun newInstance() = RepoDetailFragment()
     }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val binding by viewBindings(FragmentRepoDetailsBinding::bind)
-    private val repository = GitRepository(ApiClient.request!!)
     private lateinit var repoData: RepositoryDTO
     private val issuesList = mutableListOf<IssuesModel>()
 
 
     private lateinit var viewModel: RepoDetailViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).dashboardComponent.inject(this )
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,10 +62,7 @@ class RepoDetailFragment : Fragment(R.layout.fragment_repo_details) {
         val args = arguments
         repoData = args?.getParcelable(REPO_EXTRA_DATA)!!
         Timber.d("repoData :  $repoData")
-        viewModel = ViewModelProvider(this,
-            GitViewModelFactory(
-                repository,
-            ))[RepoDetailViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[RepoDetailViewModel::class.java]
         populateViewData()
         observeLiveData()
     }

@@ -2,20 +2,18 @@ package com.kdroid.gitrepobrowsapp.viewmodelfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.kdroid.gitrepobrowsapp.ui.githubrepo.github_repo.GithubRepoViewModel
-import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
-import com.kdroid.gitrepobrowsapp.ui.repodetails.RepoDetailViewModel
+import androidx.lifecycle.viewmodel.CreationExtras
+import javax.inject.Inject
+import javax.inject.Provider
 
-class GitViewModelFactory constructor(private val repository: GitRepository) :
-    ViewModelProvider.Factory {
+class GitViewModelFactory @Inject constructor(
+    private val viewModelMap: Map<Class<out ViewModel>, Provider<ViewModel>>,
+) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(GithubRepoViewModel::class.java)) {
-            GithubRepoViewModel(this.repository) as T
-        } else if (modelClass.isAssignableFrom(RepoDetailViewModel::class.java)) {
-            RepoDetailViewModel(this.repository) as T
-        } else {
-            throw IllegalArgumentException("ViewModel Not Found")
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        if (viewModelMap.containsKey(modelClass)) {
+            return viewModelMap[modelClass]?.get() as T
         }
+        throw IllegalArgumentException("invalid view-model key supplied")
     }
 }
