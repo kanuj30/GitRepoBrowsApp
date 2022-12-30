@@ -11,7 +11,7 @@ The Applications makes use of
 
 - <code>ViewModel</code> which acts as a controller to the activity
 - <code>Repository</code> which acts as a network data provider (Since the concept of local cache is not valid here)
-- <code>Dagger2</code> which allows dependency injections across the application
+- <code>Dagger2</code> which allows dependency injections across the application([di_dagger](https://github.com/kanuj30/GitRepoBrowsApp/tree/DI_dagger))
 - <code>Retrofit</code> which the rest api client used in the to make network calls
 - <code>Picasso</code> for image loading
 - <code>Coroutines</code> for asynchronous programming
