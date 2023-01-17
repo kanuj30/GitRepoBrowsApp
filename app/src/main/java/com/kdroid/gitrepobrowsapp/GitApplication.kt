@@ -27,9 +27,6 @@ class GitApplication : Application() {
         // Plant timber
         if (BuildConfig.DEBUG) {
             Timber.plant(object : DefaultTree() {
-                override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-                    super.log(priority, tag, message, t)
-                }
             })
         }
         // retrofit init

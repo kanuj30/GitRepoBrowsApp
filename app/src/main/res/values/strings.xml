@@ -3,4 +3,6 @@
     <string name="text_kotlin">Kotlin</string>
     <string name="text_issues_count">Open Issue :</string>
     <string name="text_license">License</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search Git repo..</string>
 </resources>
