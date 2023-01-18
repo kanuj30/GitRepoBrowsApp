@@ -4,7 +4,6 @@ import android.app.Application
 import com.kdroid.common.logger.DefaultTree
 import com.kdroid.gitrepobrowsapp.di.ApplicationComponent
 import com.kdroid.gitrepobrowsapp.di.DaggerApplicationComponent
-import com.kdroid.gitrepobrowsapp.network.ApiClient
 import timber.log.Timber
 
 class GitApplication : Application() {
@@ -33,6 +32,6 @@ class GitApplication : Application() {
             })
         }
         // retrofit init
-        ApiClient.init()
+        //ApiClient.init()
     }
 }

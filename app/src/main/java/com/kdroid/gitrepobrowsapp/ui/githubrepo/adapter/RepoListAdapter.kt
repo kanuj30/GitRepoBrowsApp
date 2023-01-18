@@ -3,6 +3,8 @@ package com.kdroid.gitrepobrowsapp.ui.githubrepo.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
 import com.kdroid.gitrepobrowsapp.databinding.ItemRepoListBinding
@@ -11,9 +13,8 @@ import com.squareup.picasso.Picasso
 import timber.log.Timber
 
 class RepoListAdapter(
-    val repoList: List<RepositoryDTO>,
     private val onRepoPress: (RepositoryDTO, View) -> Unit,
-) : RecyclerView.Adapter<RepoListAdapter.ViewHolder>() {
+) : PagingDataAdapter<RepositoryDTO, RepoListAdapter.ViewHolder>(ProductComparator) {
 
 
     inner class ViewHolder(private val itemViewBinding: ItemRepoListBinding) :
@@ -44,9 +45,14 @@ class RepoListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(repoList[position])
+        holder.bind(getItem(position)!!)
     }
 
-    override fun getItemCount() = repoList.size
+    object ProductComparator : DiffUtil.ItemCallback<RepositoryDTO>() {
+        override fun areItemsTheSame(oldItem: RepositoryDTO, newItem: RepositoryDTO) =
+            (oldItem.id == newItem.id)
 
+        override fun areContentsTheSame(oldItem: RepositoryDTO, newItem: RepositoryDTO) =
+            (oldItem == newItem)
+    }
 }

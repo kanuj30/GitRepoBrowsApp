@@ -12,17 +12,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kdroid.common.ViewState
-import com.kdroid.common.extensions.viewBindings
 import com.kdroid.gitrepobrowsapp.R
 import com.kdroid.gitrepobrowsapp.data.IssuesModel
 import com.kdroid.gitrepobrowsapp.data.RepoDetails
 import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
 import com.kdroid.gitrepobrowsapp.databinding.FragmentRepoDetailsBinding
-import com.kdroid.gitrepobrowsapp.network.ApiClient
 import com.kdroid.gitrepobrowsapp.ui.MainActivity
-import com.kdroid.gitrepobrowsapp.ui.repository.GitRepository
 import com.kdroid.gitrepobrowsapp.utils.CircleTransform
-import com.kdroid.gitrepobrowsapp.viewmodelfactory.GitViewModelFactory
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -32,12 +28,11 @@ class RepoDetailFragment : Fragment(R.layout.fragment_repo_details) {
 
     companion object {
         const val REPO_EXTRA_DATA = "data"
-        fun newInstance() = RepoDetailFragment()
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val binding by viewBindings(FragmentRepoDetailsBinding::bind)
+    private lateinit var binding: FragmentRepoDetailsBinding
     private lateinit var repoData: RepositoryDTO
     private val issuesList = mutableListOf<IssuesModel>()
 
@@ -46,15 +41,16 @@ class RepoDetailFragment : Fragment(R.layout.fragment_repo_details) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).dashboardComponent.inject(this )
+        (activity as MainActivity).dashboardComponent.inject(this)
 
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_repo_details, container, false)
+    ): View {
+        binding = FragmentRepoDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,8 +66,10 @@ class RepoDetailFragment : Fragment(R.layout.fragment_repo_details) {
     override fun onStart() {
         Timber.d("onStart()")
         super.onStart()
-        viewModel.getRepoDetailData(repoData.license?.url,
-            repoData.issues_url?.replace("{/number}", ""))
+        viewModel.getRepoDetailData(
+            repoData.license?.url,
+            repoData.issues_url?.replace("{/number}", "")
+        )
     }
 
     private fun observeLiveData() {
