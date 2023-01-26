@@ -2,29 +2,30 @@ package com.kdroid.gitrepobrowsapp.ui.githubrepo.github_repo
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kdroid.common.extensions.DebouncingQueryTextListener
 import com.kdroid.common.extensions.hide
 import com.kdroid.common.extensions.show
 import com.kdroid.gitrepobrowsapp.R
-import com.kdroid.gitrepobrowsapp.data.RepositoryDTO
 import com.kdroid.gitrepobrowsapp.databinding.FragmentMainBinding
 import com.kdroid.gitrepobrowsapp.ui.MainActivity
 import com.kdroid.gitrepobrowsapp.ui.githubrepo.adapter.RepoListAdapter
+import com.kdroid.gitrepobrowsapp.ui.githubrepo.paging.GitRepoSearchPagingSource
 import com.kdroid.gitrepobrowsapp.ui.githubrepo.paging.ProductLoadStateAdapter
 import com.kdroid.gitrepobrowsapp.ui.repodetails.RepoDetailFragment
+import com.kdroid.gitrepobrowsapp.viewmodelfactory.GitViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.sql.Time
 import javax.inject.Inject
+import javax.inject.Named
 
 class GithubRepoFragment : Fragment(R.layout.fragment_main) {
 
@@ -33,14 +34,21 @@ class GithubRepoFragment : Fragment(R.layout.fragment_main) {
     }
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: GitViewModelFactory
+
+    //private val viewModel by viewModels { viewModelFactory }
+
+
+    @Inject
+    @Named("search_query")
+    lateinit var searchQueryModule: String
 
     private lateinit var viewModel: GithubRepoViewModel
     lateinit var binding: FragmentMainBinding
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
         (activity as MainActivity).dashboardComponent.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +68,7 @@ class GithubRepoFragment : Fragment(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         Timber.d("onViewCreated()")
         viewModel = ViewModelProvider(this, viewModelFactory)[GithubRepoViewModel::class.java]
 
@@ -81,24 +90,6 @@ class GithubRepoFragment : Fragment(R.layout.fragment_main) {
             layoutManager = LinearLayoutManager(context)
             adapter = repoAdapter
         }
-
-       // binding.swipeRefresh.setOnRefreshListener { viewModel.fetchRepoList() }
-        // observe the changes
-//        viewModel.state.observe(viewLifecycleOwner) { state ->
-//            Timber.d("Emitting data")
-//            when (state) {
-//                is ViewState.Success -> {
-//                    binding.lottieAnimation.hide()
-//                    binding.progressBar.hide()
-//                    repoList.clear()
-//                    repoList.addAll(state.data.items.take(20).toMutableList())
-//                    repoAdapter.notifyDataSetChanged()
-//                }
-//                is ViewState.Loading -> loadingState()
-//                is ViewState.Error -> errorState()
-//            }
-//        }
-
 
         repoAdapter.addLoadStateListener { loadState ->
             // show empty list
@@ -131,12 +122,38 @@ class GithubRepoFragment : Fragment(R.layout.fragment_main) {
                 footer = ProductLoadStateAdapter { repoAdapter.retry() })
 
 
+        viewModel.searchData.observe(viewLifecycleOwner) {
+            repoAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
+
         // callback for collecting latest data
         lifecycleScope.launch {
             viewModel.fetchRepoList().collectLatest {
                 repoAdapter.submitData(lifecycle, it)
             }
         }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_menu, menu)
+        configureSearch(menu)
+    }
+
+    private fun configureSearch(menu: Menu) {
+        val mSearch = menu.findItem(R.id.item_search)
+        val mSearchView = mSearch.actionView as SearchView
+        makeSearchQuery(mSearchView)
+    }
+
+    private fun makeSearchQuery(searchView: SearchView) {
+        searchView.setOnQueryTextListener(DebouncingQueryTextListener(
+            lifecycle, 500L
+        ) { newText ->
+            newText?.let {
+                if (it.isEmpty()) viewModel.resetSearch() else viewModel.searchQueryChanged(it)
+            }
+        })
     }
 
     private fun errorState() {

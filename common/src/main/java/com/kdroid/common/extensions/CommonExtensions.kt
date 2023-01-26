@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
+import android.net.ConnectivityManager
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -104,3 +106,21 @@ fun Context.getDrawableCompat(@DrawableRes resId: Int, @ColorRes tintColorRes: I
     }
     else -> AppCompatResources.getDrawable(this, resId)
 }!!
+
+/**
+ * Hides the soft input keyboard from the screen
+ */
+fun View.hideKeyboard(context: Context?) {
+    val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(this.windowToken, 0)
+}
+
+
+/**
+ * Check if the Internet connectivity is available
+ */
+fun Context.isInternetAvailable(): Boolean {
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetworkInfo = connectivityManager.activeNetworkInfo
+    return activeNetworkInfo != null && activeNetworkInfo.isConnected
+}

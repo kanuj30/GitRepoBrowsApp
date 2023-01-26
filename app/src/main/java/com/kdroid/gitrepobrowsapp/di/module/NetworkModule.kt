@@ -3,8 +3,7 @@ package com.kdroid.gitrepobrowsapp.di.module
 import com.kdroid.gitrepobrowsapp.api.ApiConstant
 import com.kdroid.gitrepobrowsapp.api.ApiService
 import com.kdroid.gitrepobrowsapp.network.NetworkResponseAdapterFactory
-import com.kdroid.gitrepobrowsapp.network.create
-import com.kdroid.gitrepobrowsapp.ui.githubrepo.paging.ProductPagingSource
+import com.kdroid.gitrepobrowsapp.ui.githubrepo.paging.GitRepoSearchPagingSource
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -40,9 +39,12 @@ class NetworkModule {
         return retrofit.create(ApiService::class.java)
     }
 
+
     @Provides
-    fun provideProductPagingSource(api: ApiService): ProductPagingSource {
-        return ProductPagingSource(api)
+    fun providePagingSourceFactory(
+        networkService: ApiService,
+    ): GitRepoSearchPagingSource {
+        return GitRepoSearchPagingSource(networkService)
     }
 
 }

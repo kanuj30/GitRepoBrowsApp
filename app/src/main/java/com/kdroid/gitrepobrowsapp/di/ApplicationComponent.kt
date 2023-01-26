@@ -2,6 +2,7 @@ package com.kdroid.gitrepobrowsapp.di
 
 import android.content.Context
 import com.kdroid.gitrepobrowsapp.di.module.NetworkModule
+import com.kdroid.gitrepobrowsapp.di.module.SearchQueryModule
 import com.kdroid.gitrepobrowsapp.di.module.ViewModelModule
 import com.kdroid.gitrepobrowsapp.di.subcomponent.DashboardComponent
 import dagger.BindsInstance
@@ -10,7 +11,7 @@ import dagger.Module
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [NetworkModule::class, ViewModelModule::class, SubComponentsModule::class])
+@Component(modules = [NetworkModule::class, ViewModelModule::class, SubComponentsModule::class, SearchQueryModule::class])
 interface ApplicationComponent {
 
     @Component.Factory
